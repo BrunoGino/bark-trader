@@ -1,0 +1,44 @@
+{
+  "name": "bark-trader",
+  "version": "1.0.0",
+  "description": "Advanced cryptocurrency trading bot",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "bun --watch src/index.js",
+    "start": "bun src/index.js",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0",
+    "mongoose": "^8.1.1",
+    "redis": "^4.6.12",
+    "node-binance-api": "^0.13.1",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.4.1",
+    "joi": "^17.12.0",
+    "winston": "^3.11.0",
+    "cron": "^3.1.6"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/ws": "^8.5.10",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.11.17"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "cryptocurrency",
+    "trading",
+    "bot",
+    "binance",
+    "websocket",
+    "mongodb",
+    "redis"
+  ],
+  "author": "Bruno Gino",
+  "license": "MIT"
+}

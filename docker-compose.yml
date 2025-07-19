@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspace:cached
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongodb:27017/cryptobot
+      - REDIS_URL=redis://redis:6379
+      - BINANCE_API_KEY=${BINANCE_API_KEY:-your_api_key}
+      - BINANCE_SECRET_KEY=${BINANCE_SECRET_KEY:-your_secret_key}
+      - BINANCE_TESTNET=${BINANCE_TESTNET:-true}
+    depends_on:
+      - mongodb
+      - redis
+    command: sleep infinity
+
+  mongodb:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: cryptobot
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:7.2-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password123
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@mongodb:27017/
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
+  redis_data:

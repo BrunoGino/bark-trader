@@ -1,0 +1,22 @@
+{
+  "name": "Crypto Trading Bot",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "oven.bun-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "mongodb.mongodb-vscode",
+        "cweijan.vscode-redis-client",
+        "ms-vscode.vscode-node-azure-pack"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "forwardPorts": [3000, 27017, 6379]  
+}
