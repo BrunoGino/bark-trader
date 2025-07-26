@@ -11,12 +11,15 @@
         "ms-vscode.vscode-typescript-next",
         "mongodb.mongodb-vscode",
         "cweijan.vscode-redis-client",
-        "ms-vscode.vscode-node-azure-pack"
+        "ms-vscode.vscode-node-azure-pack",
+        "esbenp.prettier-vscode",
+        "mikestead.dotenv",
+        "MermaidChart.vscode-mermaid-chart"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
   },
-  "forwardPorts": [3000, 27017, 6379]  
+  "forwardPorts": [3000, 27017, 6379, 9229, 9230, 9231, 9232, 9233]  
 }

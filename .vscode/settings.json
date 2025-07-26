@@ -1,0 +1,134 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "always"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.rulers": [80, 120],
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+  
+  // Bun specific settings
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  
+  // JavaScript/TypeScript settings
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.format.enable": true,
+  "typescript.format.enable": true,
+  
+  // File associations for Bark Trader 🐶
+  "files.associations": {
+    "*.js": "javascript",
+    "*.mjs": "javascript",
+    "*.env*": "dotenv",
+    "docker-compose*.yml": "dockercompose",
+    "Dockerfile*": "dockerfile"
+  },
+  
+  // File exclusions for better performance
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/logs": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/*.log": true
+  },
+  
+  // Search exclusions
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/logs": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/*.log": true,
+    "**/coverage": true
+  },
+  
+  // Auto save for trading bot development
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  
+  // Terminal settings for Bark Trader
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "bash",
+      "icon": "terminal-bash"
+    },
+    "bun": {
+      "path": "bun",
+      "args": ["--version"],
+      "icon": "symbol-misc"
+    }
+  },
+  
+  // Debugging settings for Bark Trader
+  "debug.allowBreakpointsEverywhere": true,
+  "debug.openDebug": "openOnDebugBreak",
+  "debug.showBreakpointsInOverviewRuler": true,
+  "debug.console.acceptSuggestionOnEnter": "on",
+  "debug.console.fontSize": 12,
+  "debug.node.autoAttach": "disabled",
+  "debug.javascript.codelens.npmScripts": "never",
+  "debug.terminal.clearBeforeReusing": true,
+  "debug.console.closeOnEnd": false,
+  "debug.inlineValues": "auto",
+  "debug.javascript.breakOnConditionalError": true,
+  "debug.javascript.unmapMissingSources": true,
+  
+  // Git settings
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  
+  // Workbench settings for crypto trading theme 🐶
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.startupEditor": "readme",
+  "workbench.tree.indent": 20,
+  
+  // Emmet settings
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  
+  // IntelliSense settings
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "javascript.inlayHints.parameterNames.enabled": "all",
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "javascript.inlayHints.variableTypes.enabled": true,
+  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+  
+  // Custom snippets for Bark Trader 🐶
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  // Crypto trading specific settings
+  "files.watcherExclude": {
+    "**/logs/**": true,
+    "**/node_modules/**": true
+  },
+  
+  // JSON schema validation for trading config
+  "json.schemas": [
+    {
+      "fileMatch": ["**/config/*.json"],
+      "url": "./schemas/trading-config.schema.json"
+    }
+  ]
+}

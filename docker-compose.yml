@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -10,15 +10,21 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - DOCKER_ENV=true
       - NODE_ENV=development
-      - MONGODB_URI=mongodb://mongodb:27017/cryptobot
-      - REDIS_URL=redis://redis:6379
-      - BINANCE_API_KEY=${BINANCE_API_KEY:-your_api_key}
-      - BINANCE_SECRET_KEY=${BINANCE_SECRET_KEY:-your_secret_key}
+      - MONGODB_URI=mongodb://admin:password123@172.20.0.20:27017/cryptobot?authSource=admin
+      - REDIS_URL=redis://172.20.0.30:6379
+      - BINANCE_API_KEY=${BINANCE_API_KEY}
+      - BINANCE_SECRET_KEY=${BINANCE_SECRET_KEY}
       - BINANCE_TESTNET=${BINANCE_TESTNET:-true}
+      - LOG_LEVEL=${LOG_LEVEL:-debug}
+      - USE_ORIGINAL_BOT=${USE_ORIGINAL_BOT:-false}
     depends_on:
       - mongodb
       - redis
+    networks:
+      bark-trader-network:
+        ipv4_address: 172.20.0.10
     command: sleep infinity
 
   mongodb:
@@ -32,6 +38,9 @@ services:
       MONGO_INITDB_DATABASE: cryptobot
     volumes:
       - mongodb_data:/data/db
+    networks:
+      bark-trader-network:
+        ipv4_address: 172.20.0.20
 
   redis:
     image: redis:7.2-alpine
@@ -40,6 +49,9 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    networks:
+      bark-trader-network:
+        ipv4_address: 172.20.0.30
     command: redis-server --appendonly yes
 
   mongo-express:
@@ -50,10 +62,21 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: password123
-      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@mongodb:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@172.20.0.20:27017/
     depends_on:
       - mongodb
+    networks:
+      bark-trader-network:
+        ipv4_address: 172.20.0.40
 
 volumes:
   mongodb_data:
   redis_data:
+
+networks:
+  bark-trader-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1

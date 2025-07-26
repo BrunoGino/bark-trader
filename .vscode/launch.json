@@ -1,0 +1,195 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🐶 Debug Bark Trader (Main)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.js",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": [
+        "--inspect=https://debug.bun.sh/#localhost:6499/lopisdvpss",
+        "--watch"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "bark-trader:*",
+        "LOG_LEVEL": "debug"
+      },
+      "envFile": "${workspaceFolder}/.env.local",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "restart": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/*.bun.js"],
+      "stopOnEntry": true,
+      "cwd": "${workspaceFolder}",
+      "outputCapture": "std",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "smartStep": true,
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 1
+      }
+    },
+    {
+      "name": "🚀 Debug Enhanced Trading Bot",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.js",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["--inspect=9230", "--watch"],
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "bark-trader:trading:*",
+        "LOG_LEVEL": "debug",
+        "USE_ORIGINAL_BOT": "false"
+      },
+      "envFile": "${workspaceFolder}/.env.local",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/*.bun.js"],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "smartStep": true,
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 2
+      }
+    },
+    {
+      "name": "🤖 Debug Original Trading Bot",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.js",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["--inspect=9231", "--watch"],
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "bark-trader:trading:*",
+        "LOG_LEVEL": "debug",
+        "USE_ORIGINAL_BOT": "true"
+      },
+      "envFile": "${workspaceFolder}/.env.local",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/*.bun.js"],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "smartStep": true,
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 3
+      }
+    },
+    {
+      "name": "🧠 Debug Smart Loss Manager",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/index.js",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["--inspect=9232", "--watch"],
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "bark-trader:smart-loss:*",
+        "LOG_LEVEL": "debug",
+        "USE_ORIGINAL_BOT": "false"
+      },
+      "envFile": "${workspaceFolder}/.env.local",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/*.bun.js"],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "smartStep": true,
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 4
+      }
+    },
+    {
+      "name": "📊 Debug Technical Analysis",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/test-technical-analysis.js",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["--inspect=9233"],
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "bark-trader:analysis:*",
+        "LOG_LEVEL": "debug"
+      },
+      "envFile": "${workspaceFolder}/.env.local",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/*.bun.js"],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "smartStep": true,
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 5
+      }
+    },
+    {
+      "name": "🔗 Attach to Running Bun Process",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/*.bun.js"],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "smartStep": true,
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 6
+      }
+    },
+    {
+      "name": "🐳 Debug in Docker Container",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "/workspace",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/*.bun.js"],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "smartStep": true,
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 7
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🎯 Debug Full Stack",
+      "configurations": ["🐶 Debug Bark Trader (Main)"],
+      "presentation": {
+        "hidden": false,
+        "group": "bark-trader",
+        "order": 1
+      }
+    }
+  ]
+}

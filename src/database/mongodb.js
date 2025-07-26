@@ -1,19 +1,18 @@
 import mongoose from 'mongoose';
 import { logger } from '../utils/logger.js';
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cryptobot';
+import { dbConfig } from '../config/environment.js';
 
 export async function connectMongoDB() {
   try {
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+    await mongoose.connect(dbConfig.mongodb.uri, {
+      ...dbConfig.mongodb.options,
       socketTimeoutMS: 45000,
+      authSource: 'admin',
+      retryWrites: true,
+      w: 'majority'
     });
 
-    logger.info(`📦 Connected to MongoDB: ${MONGODB_URI}`);
+    logger.info(`📦 Connected to MongoDB: ${dbConfig.mongodb.uri}`);
 
     // Handle connection events
     mongoose.connection.on('error', (error) => {

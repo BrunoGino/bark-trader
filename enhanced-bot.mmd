@@ -1,0 +1,118 @@
+flowchart TD
+      A[Start EnhancedTradingBot] --> B[Initialize Bot]
+      B --> C[Load Configuration]
+      C --> D[Connect to Binance API]
+      D --> E[Load Active Positions]
+      E --> F[Setup Price Streams]
+      F --> G[Setup Cron Jobs]
+      G --> H[Initialize Smart Loss Manager]
+      H --> I[Bot Running]
+
+      I --> J{Trading Cycle Every 15min}
+      J --> K[Update Risk Metrics]
+      K --> L{Trading Paused?}
+      L -->|Yes| M[Skip Cycle]
+      L -->|No| N[Evaluate All Positions]
+
+      N --> O[Smart Loss Analysis]
+      O --> P{Position Recommendation}
+      P -->|SELL| Q[Execute Smart Sell]
+      P -->|HOLD| R[Continue Monitoring]
+
+      Q --> S[Market/Limit Order]
+      S --> T[Update Performance]
+      T --> U[Log Trade]
+
+      R --> V[Assess Market Conditions]
+      V --> W{Can Accept New Positions?}
+      W -->|Yes| X[Analyze Symbols for Trading]
+      W -->|No| Y[Broadcast Updates]
+
+      X --> Z[Get Technical Indicators]
+      Z --> AA[Determine Trading Strategies]
+      AA --> BB{Strategy Confidence > 0.6?}
+      BB -->|Yes| CC[Place Buy Order]
+      BB -->|No| DD[Skip Symbol]
+
+      CC --> EE[Calculate Position Size]
+      EE --> FF[Set Stop Loss/Take Profit]
+      FF --> GG[Save Order & Position]
+
+      DD --> Y
+      GG --> Y
+      U --> Y
+
+      Y --> HH[Generate Smart Recommendations]
+      HH --> M
+      M --> J
+
+      %% Risk Management Branch
+      I --> II{Risk Check Every 5min}
+      II --> JJ[Update Risk Metrics]
+      JJ --> KK{Total Risk > Emergency Threshold?}
+      KK -->|Yes| LL[Emergency Stop]
+      KK -->|No| MM{Flash Crash Detected?}
+      MM -->|Yes| NN[Pause Trading]
+      MM -->|No| OO{High Risk Warning?}
+      OO -->|Yes| PP[Log Risk Event]
+      OO -->|No| QQ[Continue Monitoring]
+
+      LL --> RR[Close All Positions]
+      NN --> QQ
+      PP --> QQ
+      QQ --> II
+
+      %% Daily Review Branch
+      I --> SS{Daily Review 8AM}
+      SS --> TT[Calculate Performance]
+      TT --> UU[Generate Recommendations]
+      UU --> VV[Broadcast Review]
+      VV --> SS
+
+      %% Trading Strategies
+      subgraph "Trading Strategies"
+          WW[Day Trading]
+          XX[Swing Trading]
+          YY[DCA Strategy]
+      end
+
+      AA --> WW
+      AA --> XX
+      AA --> YY
+
+      %% Smart Loss Analysis
+      subgraph "Smart Loss Manager"
+          ZZ[Trend Analysis]
+          AAA[Volume Analysis]
+          BBB[Support/Resistance]
+          CCC[Market Correlation]
+      end
+
+      O --> ZZ
+      O --> AAA
+      O --> BBB
+      O --> CCC
+
+      %% Sell Conditions
+      subgraph "Sell Triggers"
+          DDD[Take Profit Hit]
+          EEE[Stop Loss Hit]
+          FFF[Trailing Stop]
+          GGG[Strategy Exit Signal]
+          HHH[Time-based Exit]
+          III[Emergency/Trend Reversal]
+      end
+
+      P --> DDD
+      P --> EEE
+      P --> FFF
+      P --> GGG
+      P --> HHH
+      P --> III
+
+      style A fill: #550000
+      style I fill: #660033
+      style LL fill: #000080
+      style Q fill: #2E6C7B
+      style G fill: #008000
+      style CC fill: #60697C

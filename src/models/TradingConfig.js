@@ -6,7 +6,7 @@ const tradingConfigSchema = new mongoose.Schema({
     type: String,
     required: true
   }],
-  
+
   // Trading limits
   maxConcurrentTrades: {
     type: Number,
@@ -14,21 +14,21 @@ const tradingConfigSchema = new mongoose.Schema({
     min: 1,
     max: 20
   },
-  
+
   maxLossPerTrade: {
     type: Number,
-    default: 50,
+    default: 10,
     min: 1,
     max: 1000
   },
-  
+
   maxTotalLoss: {
     type: Number,
     default: 50,
     min: 1,
     max: 10000
   },
-  
+
   // Trading window and timing
   tradingWindowMinutes: {
     type: Number,
@@ -36,7 +36,7 @@ const tradingConfigSchema = new mongoose.Schema({
     min: 1,
     max: 1440 // 24 hours
   },
-  
+
   // Profit targets
   maxDailyGainPercent: {
     type: Number,
@@ -44,14 +44,14 @@ const tradingConfigSchema = new mongoose.Schema({
     min: 0.1,
     max: 50
   },
-  
+
   minGainPercent: {
     type: Number,
     default: 1,
     min: 0.1,
     max: 20
   },
-  
+
   // Risk management
   stopLossPercent: {
     type: Number,
@@ -59,14 +59,14 @@ const tradingConfigSchema = new mongoose.Schema({
     min: 0.1,
     max: 10
   },
-  
+
   takeProfitPercent: {
     type: Number,
     default: 3,
     min: 0.1,
     max: 50
   },
-  
+
   // Position sizing
   riskPercentPerTrade: {
     type: Number,
@@ -74,14 +74,14 @@ const tradingConfigSchema = new mongoose.Schema({
     min: 0.1,
     max: 10
   },
-  
+
   baseOrderSize: {
     type: Number,
     default: 10, // $10 per trade
     min: 1,
     max: 1000
   },
-  
+
   // Technical analysis settings
   technicalSettings: {
     rsiPeriod: {
@@ -133,7 +133,7 @@ const tradingConfigSchema = new mongoose.Schema({
       max: 200
     }
   },
-  
+
   // Trading strategy settings
   strategySettings: {
     strategy: {
@@ -160,7 +160,7 @@ const tradingConfigSchema = new mongoose.Schema({
       max: 5
     }
   },
-  
+
   // Market conditions filters
   marketFilters: {
     minVolume24h: {
@@ -175,7 +175,7 @@ const tradingConfigSchema = new mongoose.Schema({
       type: String
     }]
   },
-  
+
   // Time-based restrictions
   timeRestrictions: {
     tradingHours: {
@@ -197,55 +197,55 @@ const tradingConfigSchema = new mongoose.Schema({
       default: false
     }
   },
-  
+
   // System settings
   isActive: {
     type: Boolean,
     default: true
   },
-  
+
   testMode: {
     type: Boolean,
     default: true
   },
-  
+
   enableWebhooks: {
     type: Boolean,
     default: false
   },
-  
+
   webhookUrl: {
     type: String
   },
-  
+
   // Logging and monitoring
   logLevel: {
     type: String,
     enum: ['error', 'warn', 'info', 'debug'],
     default: 'info'
   },
-  
+
   enableDetailedLogging: {
     type: Boolean,
     default: false
   },
-  
+
   // Metadata
   version: {
     type: String,
     default: '1.0.0'
   },
-  
+
   description: {
     type: String,
     default: 'Default trading configuration'
   },
-  
+
   lastModified: {
     type: Date,
     default: Date.now
   },
-  
+
   modifiedBy: {
     type: String,
     default: 'system'
@@ -260,54 +260,54 @@ tradingConfigSchema.index({ isActive: 1 });
 tradingConfigSchema.index({ lastModified: -1 });
 
 // Virtuals
-tradingConfigSchema.virtual('totalSymbols').get(function() {
+tradingConfigSchema.virtual('totalSymbols').get(function () {
   return this.activeSymbols.length;
 });
 
-tradingConfigSchema.virtual('maxDailyRisk').get(function() {
+tradingConfigSchema.virtual('maxDailyRisk').get(function () {
   return this.maxLossPerTrade * this.maxConcurrentTrades;
 });
 
 // Methods
-tradingConfigSchema.methods.isSymbolActive = function(symbol) {
+tradingConfigSchema.methods.isSymbolActive = function (symbol) {
   return this.activeSymbols.includes(symbol);
 };
 
-tradingConfigSchema.methods.addSymbol = function(symbol) {
+tradingConfigSchema.methods.addSymbol = function (symbol) {
   if (!this.activeSymbols.includes(symbol)) {
     this.activeSymbols.push(symbol);
   }
   return this;
 };
 
-tradingConfigSchema.methods.removeSymbol = function(symbol) {
+tradingConfigSchema.methods.removeSymbol = function (symbol) {
   this.activeSymbols = this.activeSymbols.filter(s => s !== symbol);
   return this;
 };
 
-tradingConfigSchema.methods.canTrade = function() {
+tradingConfigSchema.methods.canTrade = function () {
   return this.isActive && this.activeSymbols.length > 0;
 };
 
-tradingConfigSchema.methods.validateSettings = function() {
+tradingConfigSchema.methods.validateSettings = function () {
   const errors = [];
-  
+
   if (this.minGainPercent >= this.maxDailyGainPercent) {
     errors.push('Minimum gain must be less than maximum daily gain');
   }
-  
+
   if (this.maxLossPerTrade >= this.maxTotalLoss) {
     errors.push('Max loss per trade must be less than max total loss');
   }
-  
+
   if (this.technicalSettings.smaShortPeriod >= this.technicalSettings.smaLongPeriod) {
     errors.push('Short SMA period must be less than long SMA period');
   }
-  
+
   if (this.activeSymbols.length > this.maxConcurrentTrades) {
     errors.push('Number of active symbols exceeds max concurrent trades');
   }
-  
+
   return {
     isValid: errors.length === 0,
     errors
@@ -315,11 +315,11 @@ tradingConfigSchema.methods.validateSettings = function() {
 };
 
 // Statics
-tradingConfigSchema.statics.getActiveConfig = function() {
+tradingConfigSchema.statics.getActiveConfig = function () {
   return this.findOne({ isActive: true });
 };
 
-tradingConfigSchema.statics.createDefault = function() {
+tradingConfigSchema.statics.createDefault = function () {
   return new this({
     activeSymbols: ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'ADAUSDT', 'DOGEUSDT'],
     description: 'Default cryptocurrency trading configuration'
@@ -327,9 +327,9 @@ tradingConfigSchema.statics.createDefault = function() {
 };
 
 // Pre-save middleware
-tradingConfigSchema.pre('save', function(next) {
+tradingConfigSchema.pre('save', function (next) {
   this.lastModified = new Date();
-  
+
   // Validate configuration
   const validation = this.validateSettings();
   if (!validation.isValid) {
@@ -337,18 +337,18 @@ tradingConfigSchema.pre('save', function(next) {
     error.details = validation.errors;
     return next(error);
   }
-  
+
   next();
 });
 
 // Pre-validate middleware
-tradingConfigSchema.pre('validate', function(next) {
+tradingConfigSchema.pre('validate', function (next) {
   // Ensure unique symbols
   this.activeSymbols = [...new Set(this.activeSymbols)];
-  
+
   // Convert symbols to uppercase
   this.activeSymbols = this.activeSymbols.map(symbol => symbol.toUpperCase());
-  
+
   next();
 });
 

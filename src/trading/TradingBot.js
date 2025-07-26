@@ -3,6 +3,7 @@ import { CronJob } from 'cron';
 import { Order } from '../models/Order.js';
 import { TradingConfig } from '../models/TradingConfig.js';
 import { redis } from '../database/redis.js';
+import { binanceConfig } from '../config/environment.js';
 import { logger } from '../utils/logger.js';
 import { calculateTechnicalIndicators } from '../utils/technicalAnalysis.js';
 
@@ -24,9 +25,11 @@ export class TradingBot {
       this.config = await TradingConfig.findOne({}) || await this.createDefaultConfig();
             
       this.binance = new Binance().options({
-        APIKEY: process.env.BINANCE_API_KEY,
-        APISECRET: process.env.BINANCE_SECRET_KEY,
-        test: process.env.BINANCE_TESTNET === 'true'
+        APIKEY: binanceConfig.apiKey,
+        APISECRET: binanceConfig.secretKey,
+        test: binanceConfig.testnet,
+        recvWindow: binanceConfig.recvWindow,
+        timeout: binanceConfig.timeout
       });
     
       await this.testConnection();

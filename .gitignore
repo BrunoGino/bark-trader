@@ -2,4 +2,8 @@ node_modules
 node_modules/**
 dist
 .env.local
+.env.production
+.env.staging
 tmp
+logs/*
+!logs/.gitkeep

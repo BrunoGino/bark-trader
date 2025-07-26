@@ -1,17 +1,20 @@
 import { createClient } from 'redis';
 import { logger } from '../utils/logger.js';
-
-const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
+import { dbConfig } from '../config/environment.js';
 
 let redis = null;
 
 export async function connectRedis() {
   try {
     redis = createClient({
-      url: REDIS_URL,
+      url: dbConfig.redis.url,
       retry_unfulfilled_commands: true,
-      retry_delay_on_failover: 100,
-      enable_offline_queue: false,
+      retry_delay_on_failover: dbConfig.redis.options.retryDelayOnFailover,
+      enable_offline_queue: dbConfig.redis.options.enableOfflineQueue,
+      socket: {
+        connectTimeout: 10000,
+        commandTimeout: 5000,
+      }
     });
 
     redis.on('error', (error) => {

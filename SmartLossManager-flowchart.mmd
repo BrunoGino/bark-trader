@@ -1,0 +1,139 @@
+flowchart TD
+    A[SmartLossManager.getPositionRecommendation] --> B[Get Current Price]
+    B --> C[shouldSellPosition]
+    C --> D[analyzePosition]
+    
+    D --> E[Get Market Data]
+    E --> F[Get Candlestick Data - 100 periods]
+    F --> G[Calculate Technical Indicators]
+    G --> H[Analyze Trend - Multiple Timeframes]
+    H --> I[Analyze Momentum - MACD & RSI]
+    I --> J[Analyze Volatility]
+    J --> K[Calculate Position Metrics]
+    
+    K --> L{Check Emergency Conditions}
+    L -->|Flash Crash over 8%| M[EMERGENCY_SELL]
+    L -->|Panic Selling| M
+    L -->|Strong Downtrend plus over 12% Loss| M
+    L -->|Extreme MACD Bearish| M
+    L -->|Bollinger Band Breakdown| M
+    L -->|Confidence over 0.7| M
+    
+    L -->|No Emergency| N{Check Trend Reversal}
+    N -->|Confirmed Downtrend| O[Evaluate Trend Strength]
+    O -->|Price Below SMA20 and SMA50| P[Add Confidence plus 0.3]
+    P -->|Momentum Weakening| Q[Add Confidence plus 0.2]
+    Q -->|RSI Sustained Weakness| R[Add Confidence plus 0.2]
+    R -->|High Volume Confirming| S[Add Confidence plus 0.2]
+    S -->|Significant Loss over 6%| T[Add Loss Weight]
+    T -->|Longer Timeframe Down| U[Add Confidence plus 0.2]
+    U -->|Confidence over Threshold| V[TREND_REVERSAL]
+    
+    N -->|No Trend Reversal| W{Check Stop Loss}
+    W -->|Price at or below Stop Loss| X[STOP_LOSS]
+    W -->|Loss percent at or above Hard Stop| X
+    
+    W -->|No Stop Loss Hit| Y{Check Time-Based Sell}
+    Y -->|Position Expired| Z[Check Grace Period]
+    Z -->|Exceeds Loss Threshold| AA[TIME_BASED_LOSS]
+    Z -->|Within Grace and Small Loss| BB{Check Take Profit}
+    
+    Y -->|Not Expired| BB{Check Take Profit}
+    BB -->|Price at or above Take Profit| CC[TAKE_PROFIT]
+    BB -->|Profit percent at or above Target| CC
+    
+    BB -->|No Take Profit| DD[Calculate Hold Confidence]
+    DD --> EE[HOLD - Continue Position]
+    
+    M --> FF[Return SELL Recommendation]
+    V --> FF
+    X --> FF
+    AA --> FF
+    CC --> FF
+    EE --> GG[Return HOLD Recommendation]
+    
+    FF --> HH[Set Urgency Level]
+    GG --> II[Set Hold Reasons]
+    
+    HH --> JJ{Urgency Level}
+    JJ -->|HIGH| KK[Emergency/Stop Loss - Immediate Action]
+    JJ -->|MEDIUM| LL[Trend Reversal - Smart Limit Order]
+    JJ -->|LOW| MM[Time/Profit Based - Limit Order]
+    
+    %% Trend Analysis Subgraph
+    subgraph "Trend Analysis Details"
+        NN[Short Term - Last 20 periods]
+        OO[Medium Term - Last 50 periods]  
+        PP[Long Term - All 100 periods]
+        QQ[Calculate Position in Range]
+        RR[Determine Trend Direction]
+        SS[Calculate Trend Strength]
+    end
+    
+    H --> NN
+    H --> OO
+    H --> PP
+    H --> QQ
+    QQ --> RR
+    RR --> SS
+    
+    %% Emergency Conditions Subgraph
+    subgraph "Emergency Sell Conditions"
+        TT[Flash Crash: Over 8% drop in 1 hour]
+        UU[Panic Selling: RSI under 20 plus High Volume]
+        VV[Strong Downtrend: Over 12% loss plus trend strength over 0.8]
+        WW[Extreme MACD: Bearish divergence]
+        XX[Bollinger Breakdown: Squeeze plus breakdown]
+    end
+    
+    L --> TT
+    L --> UU
+    L --> VV
+    L --> WW
+    L --> XX
+    
+    %% Trend Reversal Conditions Subgraph
+    subgraph "Trend Reversal Signals"
+        YY[Confirmed Downtrend: DOWN or STRONG_DOWN]
+        ZZ[Price Below Moving Averages]
+        AAA[Momentum Weakening]
+        BBB[RSI Sustained Weakness]
+        CCC[Volume Confirmation]
+        DDD[Significant Unrealized Loss]
+        EEE[Multiple Timeframe Confirmation]
+    end
+    
+    N --> YY
+    N --> ZZ
+    N --> AAA
+    N --> BBB
+    N --> CCC
+    N --> DDD
+    N --> EEE
+    
+    %% Hold Confidence Factors Subgraph
+    subgraph "Hold Confidence Calculation"
+        FFF[Base Confidence: 0.5]
+        GGG[Uptrend: Plus trend strength times 0.3]
+        HHH[Strengthening Momentum: Plus momentum strength times 0.2]
+        III[Profit Position: Plus min profit divided by 10 max 0.2]
+        JJJ[Downtrend: Minus trend strength times 0.4]
+        KKK[Loss over 5%: Minus min loss divided by 20 max 0.3]
+    end
+    
+    DD --> FFF
+    DD --> GGG
+    DD --> HHH
+    DD --> III
+    DD --> JJJ
+    DD --> KKK
+    
+    style M fill: #550000
+    style V fill: #660033
+    style X fill: #550000
+    style AA fill: #60697C
+    style CC fill: #008000
+    style EE fill: #550000
+    style KK fill: #550000
+    style LL fill: #660033
+    style MM fill: #008000
